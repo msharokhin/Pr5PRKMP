@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/text_field.dart';
 import 'register_page.dart';
 import 'profile_page.dart';
+import '../routes.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -26,15 +27,12 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState?.validate() ?? false) {
       FocusScope.of(context).unfocus();
 
-      Navigator.pushReplacement(
+      Navigator.pushReplacementNamed(
         context,
-        MaterialPageRoute(
-          builder: (context) => ProfilePage(
-            userEmail: _emailController.text,
-            userName: "Шарохин М.С.",
-          ),
-        ),
+        Routes.home,
+        arguments: {'email': _emailController.text, 'name': 'Шарохин М.С.'},
       );
+
     }
   }
 
