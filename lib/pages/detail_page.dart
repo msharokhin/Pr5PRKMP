@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
+import '../models/video_card.dart'; // Добавлен импорт модели
 
 class DetailPage extends StatelessWidget {
   const DetailPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-
-    final brand = ModalRoute.of(context)!.settings.arguments as Map<String, String>? ?? {};
-    final String title = brand['title'] ?? 'Неизвестный ускоритель';
-    final String description = brand['description'] ?? 'Описание отсутствует';
-    final String image = brand['image'] ?? 'assets/pr2.jpg';
+    // Извлекаем строго типизированный объект модели VideoCard по условию ТЗ 7 практики
+    final card = ModalRoute.of(context)!.settings.arguments as VideoCard;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        title: Text(card.title, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         backgroundColor: Colors.lightGreen,
         centerTitle: true,
-
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
@@ -27,14 +24,13 @@ class DetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Постер видеокарты со скруглением
             ClipRRect(
               borderRadius: BorderRadius.circular(16.0),
-              child: Image.asset(image, height: 260, fit: BoxFit.contain),
+              child: Image.asset(card.image, height: 260, fit: BoxFit.contain),
             ),
             const SizedBox(height: 24),
             Text(
-              title,
+              card.title,
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.lightGreen),
             ),
@@ -47,7 +43,7 @@ class DetailPage extends StatelessWidget {
                 color: Colors.grey.shade50,
               ),
               child: Text(
-                description,
+                card.fullDescription,
                 style: const TextStyle(fontSize: 15, height: 1.5, color: Colors.black87),
               ),
             ),

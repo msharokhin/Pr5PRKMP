@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart'; // Импорт пакета
 import 'routes.dart';
+import 'pages/bloc/video_cards_bloc.dart'; // Импорт BLoC
 import 'pages/loading_page.dart';
 import 'pages/login_page.dart';
 import 'pages/register_page.dart';
@@ -17,18 +19,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Навигация — Видеокарты',
+      title: 'BLoC Архитектура — Видеокарты',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightGreen),
         useMaterial3: true,
       ),
-      // Настраиваем централизованные именованные маршруты по условию 6 практики
-      initialRoute: Routes.loading, // Стартуем со сплэш-скрина
+      initialRoute: Routes.loading,
       routes: {
         Routes.loading: (context) => const LoadingPage(),
         Routes.login: (context) => const LoginPage(),
         Routes.signup: (context) => const RegisterPage(),
-        Routes.home: (context) => const HomePage(),
+        // ИЗМЕНЕНИЕ: Оборачиваем HomePage в BlocProvider и сразу добавляем событие в поток
+        Routes.home: (context) => BlocProvider(
+          create: (context) => VideoCardsBloc()..add(const LoadVideoCardsEvent()),
+          child: const HomePage(),
+        ),
         Routes.detail: (context) => const DetailPage(),
       },
     );
